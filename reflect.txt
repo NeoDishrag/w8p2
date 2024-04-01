@@ -1,0 +1,90 @@
+///////////////////////////////////////////////////////////////////////////
+                               Reflection
+                             Workshop - #8
+Full Name  : Man Yan Li
+Student ID#: 143175230
+
+Authenticity Declaration:
+I declare this submission is the result of my own work and has not been
+shared with any other student or 3rd party content provider. This submitted
+piece of work is entirely of my own creation.
+///////////////////////////////////////////////////////////////////////////
+
+1.
+In this workshop, you have the ¡§convertLbsKg¡¨ function. This function returns one value in two different ways. Explain how each return method works. If we wanted to revise this function so it doesn¡¦t provide two ways to return a value, and instead, break this out into two separate functions, what would each function prototype look like?
+
+The convertLbsKg function returns one value in two ways: 
+a) By assigning the result to the 2nd pointer argument (if it is not NULL). The second parameter of the function takes an argument for the address of a variable where the result will be stored:     
+Example: convertLbsKg(&(thisData.lbs), &(thisData.kg));
+
+b) By using "return". The function "return"s the value which can be captured in a variable.
+Example: thisData.kg = convertLbsKg(&(thisData.lbs), NULL);
+
+If we wanted to break this function into two separate functions, here is what each function prototype would look like:
+
+Only returning with pointer argument:
+void convertLbsKg(const double* lbs, double* kg);
+
+Only returning with "return":
+double convertLbsKg(const double* lbs);
+
+2.
+Name a few functions in this workshop where they are highly cohesive and loosely coupled and explain why.
+
+The function "getDoublePositive" is an example of a highly cohesive and loosely coupled function. Everything in its code block is ONLY concerned with getting an input, verifying that the input is positive and returning the positive value:
+
+double getDoublePositive(double* doubleptr)
+{
+    double val = 0;
+    do
+    {
+        scanf("%lf", &val);
+        if (val < 1)
+        {
+            printf("ERROR: Enter a positive value: ");
+        }
+    } while (val < 1);
+    if (doubleptr != NULL)
+    {
+        *doubleptr = val;
+    }
+    return val;
+}
+
+It does not use any other function I created in this workshop. It is also highly modular because it doesn't mention anything about what the input is (no mention of cat food), so it can be used in another program where we need to get a positive input from the user.
+
+The same is true of the function "convertLbsG"; this function can be used in any program where we need to convert from lbs to grams:
+
+int convertLbsG(const double* lbs, int* g)
+{
+    int val = convertLbsKg(lbs, NULL) * 1000;
+    if (g != NULL)
+    {
+        *g = val;
+    }
+    return val;
+}
+
+It does one single task: convert a value from lbs to grams. It doesn't use any other function I created (loosely coupled).
+
+
+As well as the function "calculateCostPerServing":
+
+double calculateCostPerServing(const double price, const double totalServs, double* costPerServ)
+{
+    double val = price / totalServs;
+    if (costPerServ != NULL)
+    {
+        *costPerServ = val;
+    }
+    return val;
+}
+
+It can be used in any program where we need to calculate the cost per serving using the price and the total number of servings. It doesn't use any other function I created (loosely coupled).
+
+
+3.
+You used a header (.h) file for the first time in this workshop. The header file also had a source code file (.c) to complement it where the function definitions were placed. What are your thoughts on using this design and approach to manage the development of the application? Provide specific references to the workshop to help you communicate your remarks.
+
+I believe this modular approach is highly beneficial, especially when working on programs that use many functions. For example, in Part 2 of this workshop, I created ten more functions (convertLbsKg, calculateServings, calculateReportData, etc). Putting the function prototypes in a separate header file (w8p2.h), and the function definitions in another file (w8p2.c) improves readability. I can see how it would be even more important to have separate files in a more complex program. 
+
